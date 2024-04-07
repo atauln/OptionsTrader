@@ -1,0 +1,44 @@
+@startuml db_schema
+skinparam linetype ortho
+hide circle
+
+class Account {
+    #a_id: serial
+    --
+    +name: varchar
+    +init_balance: decimal
+}
+
+class Transaction {
+    #t_id: serial
+    --
+    -a_id: int (fk)
+    -asset_id: int (fk)
+    --
+    +timestamp: timestamp
+    +price_per_asset: decimal
+    +quantity: decimal
+    +type: enum (buy, sell)
+}
+
+class Asset {
+    #asset_id: serial
+    --
+    +symbol: varchar
+    +type: enum (stock, option)
+}
+
+class ContractData {
+    #c_id: serial
+    --
+    -t_id: int (fk)
+    --
+    +strike: decimal
+    +expiry: date
+    +type: enum (call, put)
+}
+
+Transaction }o--|| Account
+Transaction }o--|| Asset
+Transaction ||--|| ContractData
+@enduml
